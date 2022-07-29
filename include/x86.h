@@ -65,6 +65,51 @@ static inline void stosb(void *addr, int data, int cnt) {
     );
 }
 
+static inline void stosl(void *addr, int data, int cnt) {
+  asm volatile("cld\n\trep stosl" :
+               "=D" (addr), "=c" (cnt) :
+               "0" (addr), "1" (cnt), "a" (data) :
+               "memory", "cc");
+}
+
+struct segdesc;
+
+static inline void lgdt(struct segdesc *p, int size) {
+  volatile ushort pd[3];
+
+  pd[0] = size-1;
+  pd[1] = (uint)p;
+  pd[2] = (uint)p >> 16;
+
+  asm volatile("lgdt (%0)" : : "r" (pd));
+}
+
+struct gatedesc;
+
+static inline void lidt(struct gatedesc *p, int size) {
+  volatile ushort pd[3];
+
+  pd[0] = size-1;
+  pd[1] = (uint)p;
+  pd[2] = (uint)p >> 16;
+
+  asm volatile("lidt (%0)" : : "r" (pd));
+}
+
+static inline void ltr(ushort sel) {
+  asm volatile("ltr %0" : : "r" (sel));
+}
+
+static inline uint readeflags(void) {
+  uint eflags;
+  asm volatile("pushfl\n\tpopl %0" : "=r" (eflags));
+  return eflags;
+}
+
+static inline void loadgs(ushort v) {
+  asm volatile("movw %0, %%gs" : : "r" (v));
+}
+
 static inline void cli(void) {
     asm volatile (
         "cli"

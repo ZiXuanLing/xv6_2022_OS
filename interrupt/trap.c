@@ -1,6 +1,6 @@
 /**
  * @file trap.c
- * @author yliuhao(liuhaopat@qq.com)
+ * @author liuhao(liuhaopat@qq.com)
  * @brief 中断处理函数
  * @version 0.1
  * @date 2022-07-29
