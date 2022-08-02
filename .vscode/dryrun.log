@@ -1,0 +1,6 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/root/xv6_2022_OS'
+make: Leaving directory '/root/xv6_2022_OS'
+ 
+make: *** No targets.  Stop.
+
